@@ -1,5 +1,8 @@
+'use strict';
+
 var express = require('express');
 var router = express.Router();
+const fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -33,12 +36,18 @@ const options = {
 
 const GOOGLE_APPLICATION_CREDENTIALS = "../GCP Hackathon Korea 2906-4c296f469273.json";
 
-// Runs the query
 bigquery
   .query(options)
   .then(results => {
     const rows = results[0];
     console.log('Rows:');
+    let output = rows;
+    const fs = require('fs');
+    const content = JSON.stringify(output);
+
+    let data = JSON.stringify(output);
+    fs.writeFileSync('outputtest.json', data); 
+ 
     rows.forEach(row => console.log(row));
   })
   .catch(err => {
