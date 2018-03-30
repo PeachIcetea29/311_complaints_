@@ -16,11 +16,9 @@ const BigQuery = require('@google-cloud/bigquery');
  * TODO(developer): Uncomment the following lines before running the sample.
  */
  const projectId = "gcp-hackathon18-icn-2906";
- const sqlQuery = `SELECT category 
-FROM \`bigquery-public-data.san_francisco_311.311_service_requests\` 
-WHERE category like '%General%' 
-GROUP BY category 
-LIMIT 10`;
+ const sqlQuery = `SELECT unique_key,created_date,closed_date,category,complaint_type,incident_address,location
+ FROM \`bigquery-public-data.san_francisco_311.311_service_requests\` 
+WHERE incident_address <> 'Not associated with a specific address' and category IN ('Street and Sidewalk Cleaning','Graffiti','Litter Receptacles', 'Sewer Issues','Street Defects', 'Damaged Property','Homeless Concerns','Streetlights','Catch Basin Maintenance','Blocked Street or SideWalk','Abandoned Vehicle','Sidewalk or Curb','Noise Report','Illegal Postings') AND created_date >= "2017-01-01 00:00:00"`;
 
 // Creates a client
 const bigquery = new BigQuery({
@@ -48,7 +46,8 @@ bigquery
     let data = JSON.stringify(output);
     fs.writeFileSync('outputtest.json', data); 
  
-    rows.forEach(row => console.log(row));
+    console.log("fin");
+    //rows.forEach(row => console.log(row));
   })
   .catch(err => {
     console.error('ERROR:', err);
