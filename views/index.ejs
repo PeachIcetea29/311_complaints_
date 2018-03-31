@@ -1,11 +1,249 @@
 <!DOCTYPE html>
+
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0%;
+        padding: 0;
+      }
+
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;    
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+    </style>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div style="width:auto;height: 75px; line-height: 70px">
+        <img src="img/picker.png" id="ab" width="138px" height="58px" style="vertical-align: middle; margin-left: 80px; margin-right: 79px;">
+        <input id="region" type="text" style="width: 477px; height: 40px; border-color: red; border-style: solid; font-size: 1.5em" placeholder=" &nbsp; Enter your location">
+        <input type="image" src="img/search.png" style="width: 78px; height: 45px; vertical-align: middle;" onclick="search()">
+    </div>
+   
+   <div style="width: auto; height: 50px;">
+        <div class="navbar">
+            <div class="dropdown">
+                <button class="dropbtn"> &nbsp; Price &nbsp; 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn"> &nbsp; Rooms &nbsp; 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn"> &nbsp; 쓰레기 민원 &nbsp; 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn"> &nbsp; 그래피티 민원 &nbsp; 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>            
+            
+        </div>
+   </div>
+   
+    <div>
+        <div id="map" style="width: 70%; height: 86%; margin-right: 10px; position: absolute;"> </div>
+        <div class="div1" style="width: 50px;">
+            <button style="width: 15%; position: absolute; right:0; margin-right: 15%; background-color: red; border: 1; border-color: aliceblue; font-size: 3em"> Best Pick </button>   
+        </div>
+        <div class="div2" style="width: 50px;">
+            <button style="width: 15%; position: absolute; right:0; font-size: 3em; border: 1; border-color: aliceblue;"> My Pick </button>    
+        </div>
+        <div>
+            <button style="width: 30%; height: 80%; position: absolute; right:0; margin-top: 3%;">mymymy</button>
+        </div>
+    </div>
+      
+    
+    <!--이거 하려면 아래 마커 함수 실행 시켰을 때 맵의 위치 다시 찍어줘야 함-->
+    <script>
+      var map;
+      function initMap() {
+        var uluru = {lat: 39.639575, lng: -99.320602};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 39.639575, lng: -99.320602},
+          zoom: 5,   center: new google.maps.LatLng(-33.91722, 151.23064),
+          mapTypeId: 'roadmap'
+        });
+
+        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+        var icons = {
+          parking: {
+            icon: src="img/dot_red.png"
+          },
+          library: {
+            icon: iconBase + 'library_maps.png'
+          },
+          info: {
+            icon: iconBase + 'info-i_maps.png'
+          }
+        };
+
+        var features = [
+          {
+            position: new google.maps.LatLng(-33.91721, 151.22630),
+            type: 'info'
+          }, {
+            position: new google.maps.LatLng(-33.91539, 151.22820),
+            type: 'info'
+          }, {
+            position: new google.maps.LatLng(-33.91747, 151.22912),
+            type: 'info'
+          }, {
+            position: new google.maps.LatLng(-33.91910, 151.22907),
+            type: 'info'
+          }, {
+            position: new google.maps.LatLng(-33.91725, 151.23011),
+            type: 'info'
+          }, {
+            position: new google.maps.LatLng(-33.91662347903106, 151.22879464019775),
+            type: 'parking'
+          }, {
+            position: new google.maps.LatLng(-33.916365282092855, 151.22937399734496),
+            type: 'parking'
+          }, {
+            position: new google.maps.LatLng(-33.91665018901448, 151.2282474695587),
+            type: 'parking'
+          }, {
+            position: new google.maps.LatLng(-33.91727341958453, 151.23348314155578),
+            type: 'library'
+          }
+        ];
+
+        // Create markers.
+        features.forEach(function(feature) {
+          var marker = new google.maps.Marker({
+            position: feature.position,
+            icon: icons[feature.type].icon,
+            map: map
+          });
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCg_lICf_UfDzvQRm7dMWtdSZqjqyZ1CGs&callback=initMap" async defer></script>
+    
+  
+    <script>
+     function search(){
+
+        var region = document.getElementById("region").value;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+            if(xhttp.readyState == 4 && xhttp.status == 200){
+                var location = JSON.parse(xhttp.responseText);
+                console.log(location);
+                var lat = location.results[0].geometry.location.lat;
+                var lng = location.results[0].geometry.location.lng;
+                console.log(lat);
+                console.log(lng);
+                
+                new function initMap() {
+                    map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: lat, lng: lng},
+                    zoom: 13
+                    });
+                }    
+            }
+        };
+        xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address="+region+"&key=AIzaSyCrP7NgHcEeO53WHvrSrx4Ka8vw0nrKnEk");
+        xhttp.send();   
+    }
+    </script>      
+                
   </body>
 </html>
