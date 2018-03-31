@@ -71,6 +71,7 @@ var getComplaints = function(){
     if(document.getElementById("d1").value == 1) result.where = "category = 'Noise Report'";
     else if( document.getElementById("d1").value == 2) result.where = "category = 'Street and Sidewalk Cleaning'";
     else if( document.getElementById("d1").value == 3) result.where = "category = 'Graffiti'";
+    else if( document.getElementById("d1").value == 4) result.where = "category = 'Homeless Concerns'";
 
     console.log(result.where);
    
