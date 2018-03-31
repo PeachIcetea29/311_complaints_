@@ -84,16 +84,31 @@
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#" onClick="Select('$1000 ~ $2000', 1)" return false;> $1000 ~ $2000 </a>
-                    <a href="#" onClick="Select('$2000 ~ $3000', 1)" return false;> $2000 ~ $3000 </a>
-                    <a href="#" onClick="Select('$3000 ~ $4000', 1)" return false;> $3000 ~ $4000 </a>
+                    <a href="#" onClick="Select('$1000 ~ $2000', 1, 1)" return false;> $1000 ~ $2000 </a>
+                    <input type="hidden" id="a1" value="0" readonly="readonly"/>
+                    <a href="#" onClick="Select('$2000 ~ $3000', 1, 2)" return false;> $2000 ~ $3000 </a>
+                    <a href="#" onClick="Select('$3000 ~ $4000', 1, 3)" return false;> $3000 ~ $4000 </a>
                 </div>
                 <script>
-                function Select(value, type){
-                  if(type == 1) document.getElementById("PriceButton").innerHTML = "Price " + value;
-                  else if(type == 2) document.getElementById("RoomButton").innerHTML = value;
-                  else if(type == 3) document.getElementById("DisButton").innerHTML = "Distance " + value;
+                function Select(value, type, choice){
+                  if(type == 1) {
+                    document.getElementById("PriceButton").innerHTML = "Price " + value;
+                    document.getElementById("a1").value = choice; 
+                  }
+                  else if(type == 2){
+                    document.getElementById("RoomButton").innerHTML = value;
+                    document.getElementById("b1").value = choice; 
+                  } 
+                  else if(type == 3){
+                    document.getElementById("DisButton").innerHTML = "Distance " + value;
+                    document.getElementById("c1").value = choice; 
+                  } 
                   getFilterValue();
+                }
+                function SelectCmp(value, type){
+                    document.getElementById("CmpButton").innerHTML = "Complaints " + value;
+                    document.getElementById("d1").value = type; 
+                  getComplaints();
                 }
                 </script>
             </div>
@@ -103,9 +118,10 @@
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#" onClick="Select('Two Bed Rooms', 2)" return false;> Two Bed Rooms </a>
-                    <a href="#" onClick="Select('Three Bed Rooms', 2)" return false;> Three Bed Rooms </a>
-                    <a href="#" onClick="Select('Four Bed Rooms', 2)" return false;> Four Bed Rooms </a>
+                    <a href="#" onClick="Select('Two Bed Rooms', 2, 1)" return false;> Two Bed Rooms </a>
+                    <input type="hidden" id="b1" value="0" readonly="readonly"/>
+                    <a href="#" onClick="Select('Three Bed Rooms', 2, 2)" return false;> Three Bed Rooms </a>
+                    <a href="#" onClick="Select('Four Bed Rooms', 2, 3)" return false;> Four Bed Rooms </a>
                 </div>
             </div>
             
@@ -114,20 +130,22 @@
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#" onClick="Select('0 ~ 5 miles', 3)" return false;> 0 ~ 5 miles </a>
-                    <a href="#" onClick="Select('5 ~ 10 miles', 3)" return false;> 5 ~ 10 miles </a>
-                    <a href="#" onClick="Select('10 ~ 15 miles', 3)" return false;> 10 ~ 15 miles</a>
+                    <a href="#" onClick="Select('0 ~ 2 miles', 3, 1)" return false;> 0 ~ 5 miles </a>
+                    <input type="hidden" id="c1" value="0" readonly="readonly"/>
+                    <a href="#" onClick="Select('2 ~ 5 miles', 3, 2)" return false;> 5 ~ 10 miles </a>
+                    <a href="#" onClick="Select('5 ~ miles', 3, 3)" return false;> 10 ~ 15 miles</a>
                 </div>
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn"> &nbsp; Complaints &nbsp; 
+                <button class="dropbtn" id ="CmpButton"> &nbsp; Complaints &nbsp; 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#"> Noise </a>
-                    <a href="#"> Street Cleaning </a>
-                    <a href="#"> Graffiti </a>
+                    <a href="#" onClick="SelectCmp('Noise', 1 )" return false;> Noise </a>
+                    <input type="hidden" id="d1" value="0" readonly="readonly"/>
+                    <a href="#" onClick="SelectCmp('Noise', 2 )" return false;> Street Cleaning </a>
+                    <a href="#" onClick="SelectCmp('Noise', 3 )" return false;> Graffiti </a>
                     <a href="#"> Homeless </a>
                     <a href="#"> Street Lights </a>
                     <a href="#"> Abandon Vehicles </a>
@@ -214,6 +232,7 @@
         });
        
        }
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCg_lICf_UfDzvQRm7dMWtdSZqjqyZ1CGs&callback=initMap" async defer></script>
     

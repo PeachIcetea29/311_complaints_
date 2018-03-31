@@ -31,8 +31,9 @@ router.post('/search', function (req, res) {
   var where = result.where;
   var r = [];
   //"SELECT location FROM sf LIMIT 5;"
-  //"SELECT " + select + " FROM " + from + " WHERE " + where + ";"
-  con.query("SELECT location FROM sf LIMIT 5;" , function (err, result, fields) {
+  rows = "SELECT " + select + " FROM " + from + " WHERE " + where + ";"
+  console.log(rows);
+  con.query(rows , function (err, result, fields) {
     if (err) throw err; 
     Object.keys(result).forEach(function(key) {
       var row = result[key];
