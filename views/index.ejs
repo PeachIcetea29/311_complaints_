@@ -104,11 +104,15 @@
                     document.getElementById("c1").value = choice; 
                   } 
                   getFilterValue();
+                  deleteMarkers();
+                  aaa();
                 }
                 function SelectCmp(value, type){
                     document.getElementById("CmpButton").innerHTML = "Complaints " + value;
                     document.getElementById("d1").value = type; 
                   getComplaints();
+                  deleteMarkers();
+                  aaa();
                 }
                 </script>
             </div>
@@ -207,16 +211,18 @@
           addMarker(event.latLng);
         });
 
-        // Adds a marker at the center of the map.
-        aaa();
+        // Adds a marker at the center of the map
       }
       function aaa(){
             var lat2 = sessionStorage.getItem('lat');
             var lng2 = sessionStorage.getItem('lng');
             var haightAshbury;
-            for(var i=0; i< 5; i++){
-              haightAshbury = {lat: lat2, lng: lng2};
-              console.log(lat2);
+            var lat3 = lat2.split(',');
+            var lng3 = lng2.split(',');
+
+            for(var i=0; i< lat3.length; i++){
+              haightAshbury = {lat: parseFloat(lat3[i]), lng: parseFloat(lng3[i])};
+              console.log(lat3[i]);
                 addMarker(haightAshbury);    
             }
         }
