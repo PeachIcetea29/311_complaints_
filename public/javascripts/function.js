@@ -28,8 +28,8 @@ var getFilterValue = function(){
             var res = JSON.parse(httpRequest.responseText);
             if(res.result == true){
                 //PrintResult(res.data);
-                ParsingData(res.data);
                 console.log(res.data);
+                ParsingData(res.data);
             } else{
                 alert('!');
             }
@@ -102,13 +102,15 @@ var MyChoose = function(){
 }
 
 var ParsingData = function(r){
-    for(var i=0; i < r.length;i++){
+    var lng = [];
+    var lat = [];
+    for(var i=0; i < r.length; i++){
         var comma = r[i].indexOf(",");
-        var latitude = r[i].substring(1,comma);
-        var longitude = r[i].substring(comma+2,r[i].length-1);
-        console.log(latitude);
-        console.log(longitude);
+        lat.push(r[i].substring(1,comma));
+        lng.push(r[i].substring(comma+2,r[i].length-1));
       }
+    sessionStorage.setItem('lat', lat);
+    sessionStorage.setItem('lng', lng);  
 }
 
 function setMark(){
