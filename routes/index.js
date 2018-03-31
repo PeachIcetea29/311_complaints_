@@ -3,10 +3,48 @@
 var express = require('express');
 var router = express.Router();
 const fs = require('fs');
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "35.189.146.14",
+  user: "root",
+  password: "311",
+  database: "house"
+});
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
+});
+
+router.post('/search', function (req, res) {
+  var result = req.body;
+  var rows ="";
+  
+  var select = result.select;
+  var from = result.from;
+  var where = result.where;
+  var r = [];
+  //"SELECT location FROM sf LIMIT 5;"
+  //"SELECT " + select + " FROM " + from + " WHERE " + where + ";"
+  con.query("SELECT location FROM sf LIMIT 5;" , function (err, result, fields) {
+    if (err) throw err; 
+    Object.keys(result).forEach(function(key) {
+      var row = result[key];
+      r.push(row.location);
+    });
+    var body = new Object();
+    body.result = true;
+    body.data = r;
+    res.json(body);
+  });
+  //var rows =  con.query("SELECT " + select + " FROM sf LIMIT 2");
+  
 });
 
 /*

@@ -80,40 +80,43 @@
    <div style="width: auto; height: 50px;">
         <div class="navbar">
             <div class="dropdown">
-                <button class="dropbtn"> &nbsp; Price &nbsp; 
+                <button class="dropbtn" id="PriceButton"> &nbsp; Price &nbsp; 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a onclick="consolelog()"> $100000 ~ $200000 </a>
-                    <a href="#"> $200000 ~ $300000 </a>
-                    <a href="#"> $300000 ~ $400000 </a>
+                    <a href="#" onClick="Select('$1000 ~ $2000', 1)" return false;> $1000 ~ $2000 </a>
+                    <a href="#" onClick="Select('$2000 ~ $3000', 1)" return false;> $2000 ~ $3000 </a>
+                    <a href="#" onClick="Select('$3000 ~ $4000', 1)" return false;> $3000 ~ $4000 </a>
                 </div>
                 <script>
-                function consolelog(){
-                    console.log("Abc");
+                function Select(value, type){
+                  if(type == 1) document.getElementById("PriceButton").innerHTML = "Price " + value;
+                  else if(type == 2) document.getElementById("RoomButton").innerHTML = value;
+                  else if(type == 3) document.getElementById("DisButton").innerHTML = "Distance " + value;
+                  getFilterValue();
                 }
                 </script>
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn"> &nbsp; Bed Rooms &nbsp; 
+                <button class="dropbtn" id = "RoomButton";> &nbsp; Bed Rooms &nbsp; 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#"> Two Bed Rooms </a>
-                    <a href="#"> Three Bed Rooms </a>
-                    <a href="#"> Four Bed Rooms </a>
+                    <a href="#" onClick="Select('Two Bed Rooms', 2)" return false;> Two Bed Rooms </a>
+                    <a href="#" onClick="Select('Three Bed Rooms', 2)" return false;> Three Bed Rooms </a>
+                    <a href="#" onClick="Select('Four Bed Rooms', 2)" return false;> Four Bed Rooms </a>
                 </div>
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn"> &nbsp; Distance &nbsp; 
+                <button class="dropbtn" id = "DisButton"> &nbsp; Distance &nbsp; 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#"> 0 ~ 5 miles </a>
-                    <a href="#"> 5 ~ 10 miles </a>
-                    <a href="#"> 15 ~ 15 miles</a>
+                    <a href="#" onClick="Select('0 ~ 5 miles', 3)" return false;> 0 ~ 5 miles </a>
+                    <a href="#" onClick="Select('5 ~ 10 miles', 3)" return false;> 5 ~ 10 miles </a>
+                    <a href="#" onClick="Select('10 ~ 15 miles', 3)" return false;> 10 ~ 15 miles</a>
                 </div>
             </div>
             
@@ -160,15 +163,16 @@
       var map;
       function initMap() {
         var uluru = {lat: 39.639575, lng: -99.320602};
-        var map = new google.maps.Map(document.getElementById('map'), {
+        map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 39.639575, lng: -99.320602},
-          zoom: 5,   center: new google.maps.LatLng(-33.91722, 151.23064),
+          zoom: 5,   center: new google.maps.LatLng( 39.639575, -99.320602),
           mapTypeId: 'roadmap'
         });
+
         var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
         var icons = {
-          parking: {
-            icon: src="img/dot_red.png"
+          house: {
+            icon: src="img/house.png"
           },
           library: {
             icon: iconBase + 'library_maps.png'
@@ -177,36 +181,29 @@
             icon: iconBase + 'info-i_maps.png'
           }
         };
+        
         var features = [
           {
-            position: new google.maps.LatLng(-33.91721, 151.22630),
-            type: 'info'
+            position: new google.maps.LatLng(37.755047, -122.429646),
+            type: 'house'
           }, {
-            position: new google.maps.LatLng(-33.91539, 151.22820),
-            type: 'info'
+            position: new google.maps.LatLng(37.771168, -122.439014),
+            type: 'house'
           }, {
-            position: new google.maps.LatLng(-33.91747, 151.22912),
-            type: 'info'
+            position: new google.maps.LatLng(37.753466, -122.502983),
+            type: 'house'
           }, {
-            position: new google.maps.LatLng(-33.91910, 151.22907),
-            type: 'info'
+            position: new google.maps.LatLng(37.717756, -122.444811),
+            type: 'house'
           }, {
-            position: new google.maps.LatLng(-33.91725, 151.23011),
-            type: 'info'
+            position: new google.maps.LatLng(37.794485, -122.414502),
+            type: 'house'
           }, {
-            position: new google.maps.LatLng(-33.91662347903106, 151.22879464019775),
-            type: 'parking'
-          }, {
-            position: new google.maps.LatLng(-33.916365282092855, 151.22937399734496),
-            type: 'parking'
-          }, {
-            position: new google.maps.LatLng(-33.91665018901448, 151.2282474695587),
-            type: 'parking'
-          }, {
-            position: new google.maps.LatLng(-33.91727341958453, 151.23348314155578),
-            type: 'library'
+            position: new google.maps.LatLng(37.779040, -122.460187),
+            type: 'house'
           }
         ];
+
         // Create markers.
         features.forEach(function(feature) {
           var marker = new google.maps.Marker({
@@ -215,7 +212,8 @@
             map: map
           });
         });
-      }
+       
+       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCg_lICf_UfDzvQRm7dMWtdSZqjqyZ1CGs&callback=initMap" async defer></script>
     
@@ -245,6 +243,6 @@
         xhttp.send();   
     }
     </script>      
-                
+    <script src="/javascripts/function.js"></script>          
   </body>
 </html>

@@ -1,33 +1,43 @@
-var mysql = require('mysql');
-
-var con = mysql.createConnection({
-  host: "35.189.146.14",
-  user: "root",
-  password: "311"
-});
-
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
-
-var getFilterValue = function(){
+var getFilterValue = function(/*price, bedrooms, distance, complaints*/){
     /*
-    var SELECT = "";
-    var FROM = "";
-    var WHERE = "";
+    var SELECT = "SELECT location ";
+    var FROM = "FROM sf ";
+    var WHERE = "WHERE price = " +price+ " bedrooms = " +bedrooms+ " distance = " +distance+ " complaints = " +complants+ " ";
     var etcSQL = "";
 
-    if( not selected ) {
-        SELECT += ;
-    }
-    var query += SELECT + " " + FROM + " " + WHERE + " " + etcSQL + " ;" ;
-    ReqQuery();
+    var query += SELECT + FROM + WHERE + etcSQL + " ;" ;
+    ReqQuery(query);
     */
+    var result = new Object();
+    result.select = 'location';
+    result.from = 'sf';
+    result.where = "";
+
+    var httpRequest;
+    if (window.XMLHttpRequest) { // 모질라, 사파리등 그외 브라우저, ...
+        httpRequest = new XMLHttpRequest();
+    } else if (window.ActiveXObject) { // IE 8 이상
+        httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    httpRequest.onreadystatechange = function(){
+        if (httpRequest.readyState == 4 && httpRequest.status == 200){
+            var res = JSON.parse(httpRequest.responseText);
+            if(res.result == true){
+                //PrintResult(res.data);
+                console.log(res.data);
+            } else{
+                alert('!');
+            }
+        }
+    };
+    httpRequest.open('POST', location.origin + '/search', true);
+    httpRequest.setRequestHeader("Content-type", "application/json");
+    httpRequest.send(JSON.stringify(result));
 }
 
-var ReqQuery = function(){
-    //var result = mysql.query(query);
+var ReqQuery = function(query){
+    var result = mysql.query(query);
+    console.log(result);
 }
 
 var PrintResult = function(){
